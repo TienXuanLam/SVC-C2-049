@@ -1,0 +1,36 @@
+# Runtime parameters (distinct from config/agent.yaml,
+# the static manifest). No HITL: legal counsel / contract manager review of the
+# draft is an out-of-band human process (proposal §4/§9), not a technical
+# interrupt() checkpoint — mandatory-disclaimer pattern is used instead of HITL
+# for this template (mirrors IMPLEMENTATION_LOG.md A5).
+max_retry: 3
+memory_enabled: false
+timeout_s: 30
+
+# SLA breach severity classification thresholds (proposal §10: "embeddable
+# directly from published standards" — ITIL4/ISO 20000 do not themselves
+# publish a single universal numeric deviation threshold; the values below
+# are ILLUSTRATIVE DEFAULTS aligned with common ITIL4/ISO 20000 practice,
+# NOT extracted from a specific cited section of either standard. Calibrate
+# against your actual SLA contract terms and governance framework before
+# production use — see docs/07_operation_guide.md "Severity Threshold Setup".
+# breach_ratio = abs(actual_value - threshold) / threshold (or abs(actual_value)
+# when threshold == 0) — see src/services/breach_classify_service.py.
+severity_thresholds:
+  critical: 0.20   # breach_ratio >= 0.20 -> critical
+  major: 0.05      # 0.05 <= breach_ratio < 0.20 -> major; below -> minor
+
+# Severity tiers eligible for SLA service credit, per typical vendor contract
+# terms. Institution-configurable — not all contracts grant credit at the
+# "major" tier.
+credit_eligible_tiers: ["critical", "major"]
+
+# prior design review M2: severity_thresholds/credit_eligible_tiers above are shipped
+# ILLUSTRATIVE DEFAULTS, not a verified institution policy. Until an
+# authorized reviewer (contract manager / legal counsel — proposal §4/§9)
+# attests that these values were calibrated against actual SLA contract
+# terms, the report must not present "credit eligible: true/false" as a
+# determination — it renders "requires contract-manager determination"
+# instead (docs/07_operation_guide.md "Severity Threshold Setup"). Set to
+# true only after that calibration/attestation has happened.
+severity_policy_verified: false

@@ -1,0 +1,29 @@
+# Agent Manifest — AgentRegistry entry point
+# This file is required for AgentRegistry auto-discovery (lazy-load architecture)
+
+id: "SVC-C2-049"
+name: "OutsourcedBPOServiceSLABreachRootCauseRemediationReportAgent"
+namespace: "svc"
+version: "0.1.0"
+enabled: true
+category: "Cat 2"
+generation_mode: "llm"
+industry: "SVC"
+
+# Level 2 base agent type
+base_type: "DocGenerationAgent"  # RAGAgent | ChatAgent | ReActAgent | DocGenerationAgent
+
+# Entry point
+class: "src.graph.graph.OutsourcedBPOServiceSLABreachRootCauseRemediationReportAgent"
+
+# Security
+required_trust_level: "VERIFIED_EXTERNAL"
+
+# Dependencies — the LLM secret is optional: every drafting step has a
+# deterministic fallback template (IMPLEMENTATION_LOG.md B5 pattern) when
+# config.llm is None.
+requires:
+  secrets:
+    - ANTHROPIC_API_KEY
+  extras:
+    - anthropic
